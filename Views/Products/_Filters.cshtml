@@ -1,0 +1,142 @@
+﻿@model EcommerceFullstackDesign.Models.ProductViewModel
+
+<div class="row">
+    <div class="col-md-6">
+        <img src="@Model.ImageUrl" class="img-fluid" alt="@Model.Name">
+    </div>
+    <div class="col-md-6">
+        <h4>@Model.Name</h4>
+
+        @if (!string.IsNullOrEmpty(Model.Brand))
+        {
+            <p class="text-muted">Brand: @Model.Brand</p>
+        }
+
+        <div class="mb-3">
+            @if (Model.OldPrice.HasValue)
+            {
+                <span class="h3 text-danger">$@Model.Price.ToString("F2")</span>
+                <del class="text-muted ms-2">$@Model.OldPrice.Value.ToString("F2")</del>
+            }
+            else
+            {
+                <span class="h3 text-primary">$@Model.Price.ToString("F2")</span>
+            }
+        </div>
+
+        <div class="text-warning mb-3">
+            @for (int i = 1; i <= 5; i++)
+            {
+                if (i <= Math.Floor(Model.Rating))
+                {
+                    <i class="fas fa-star"></i>
+                }
+                else if (i - 0.5 <= Model.Rating)
+                {
+                    <i class="fas fa-star-half-alt"></i>
+                }
+                else
+                {
+                    <i class="far fa-star"></i>
+                }
+            }
+            <span class="text-muted ms-2">(@Model.ReviewCount reviews)</span>
+        </div>
+
+        <p class="text-muted">@(Model.Description?.Length > 100 ? Model.Description.Substring(0, 100) + "..." : Model.Description)</p>
+
+        <div class="mb-3">
+            @if (Model.IsVerified)
+            {
+                <span class="badge bg-info me-2">Verified</span>
+            }
+            @if (Model.FreeShipping)
+            {
+                <span class="badge bg-success">Free Shipping</span>
+            }
+        </div>
+
+        <div class="d-flex gap-2">
+            <a href="@Url.Action("Details", new { id = Model.Id })" class="btn btn-outline-primary">View Details</a>
+            <button class="btn btn-primary add-to-cart-btn" data-id="@Model.Id">
+                <i class="fas fa-cart-plus"></i> Add to Cart
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@* <div class="filter-sidebar">
+    <div class="filter-group py-3 border-bottom">
+        <div class="d-flex justify-content-between align-items-center mb-2" data-bs-toggle="collapse" href="#categoryCollapse">
+            <h6 class="filter-title mb-0">Category</h6>
+            <i class="fa fa-chevron-up text-muted"></i>
+        </div>
+        <div class="collapse show" id="categoryCollapse">
+            <ul class="list-unstyled mb-0">
+                <li><a href="#" class="filter-link">Mobile accessory</a></li>
+                <li><a href="#" class="filter-link">Electronics</a></li>
+                <li><a href="#" class="filter-link">Smartphones</a></li>
+                <li><a href="#" class="filter-link">Modern tech</a></li>
+                <li><a href="#" class="filter-link text-primary mt-1">See all</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="filter-group py-3 border-bottom">
+        <div class="d-flex justify-content-between align-items-center mb-3" data-bs-toggle="collapse" href="#brandsCollapse">
+            <h6 class="filter-title mb-0">Brands</h6>
+            <i class="fa fa-chevron-up text-muted"></i>
+        </div>
+        <div class="collapse show" id="brandsCollapse">
+            <div class="form-check mb-2">
+                <input class="form-check-input custom-check" type="checkbox" checked id="brand1">
+                <label class="form-check-label" for="brand1">Samsung</label>
+            </div>
+            <div class="form-check mb-2">
+                <input class="form-check-input custom-check" type="checkbox" checked id="brand2">
+                <label class="form-check-label" for="brand2">Apple</label>
+            </div>
+            <div class="form-check mb-2">
+                <input class="form-check-input custom-check" type="checkbox" id="brand3">
+                <label class="form-check-label" for="brand3">Huawei</label>
+            </div>
+            <div class="form-check mb-2">
+                <input class="form-check-input custom-check" type="checkbox" checked id="brand4">
+                <label class="form-check-label" for="brand4">Pocco</label>
+            </div>
+            <a href="#" class="text-primary text-decoration-none small">See all</a>
+        </div>
+    </div>
+
+    <div class="filter-group py-3 border-bottom">
+        <div class="d-flex justify-content-between align-items-center mb-3" data-bs-toggle="collapse" href="#featuresCollapse">
+            <h6 class="filter-title mb-0">Features</h6>
+            <i class="fa fa-chevron-up text-muted"></i>
+        </div>
+        <div class="collapse show" id="featuresCollapse">
+            <div class="form-check mb-2">
+                <input class="form-check-input custom-check" type="checkbox" checked id="feat1">
+                <label class="form-check-label" for="feat1">Metallic</label>
+            </div>
+            <div class="form-check mb-2">
+                <input class="form-check-input custom-check" type="checkbox" id="feat2">
+                <label class="form-check-label" for="feat2">Plastic cover</label>
+            </div>
+        </div>
+    </div>
+
+    @foreach (var item in new[] { "Price range", "Condition", "Ratings", "Manufacturer" })
+    {
+        <div class="filter-group py-3 border-bottom">
+            <div class="d-flex justify-content-between align-items-center" style="cursor:pointer">
+                <h6 class="filter-title mb-0">@item</h6>
+                <i class="fa fa-chevron-down text-muted"></i>
+            </div>
+        </div>
+    }
+</div> *@

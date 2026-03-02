@@ -1,0 +1,113 @@
+﻿@using EcommerceFullstackDesign.Models
+@model List<FAQItem>
+@{
+    ViewData["Title"] = "Frequently Asked Questions";
+}
+
+<div class="container py-4">
+    <!-- Page Header -->
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold">Frequently Asked Questions</h1>
+        <p class="text-muted">Find answers to common questions below</p>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" class="form-control form-control-lg" id="searchFAQ" placeholder="Search questions...">
+                <button class="btn btn-primary" type="button" onclick="searchFAQ()">Search</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Categories -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="btn-group" role="group">
+                <button class="btn btn-outline-primary active" onclick="filterFAQ('all')">All</button>
+                <button class="btn btn-outline-primary" onclick="filterFAQ('Orders')">Orders</button>
+                <button class="btn btn-outline-primary" onclick="filterFAQ('Payments')">Payments</button>
+                <button class="btn btn-outline-primary" onclick="filterFAQ('Shipping')">Shipping</button>
+                <button class="btn btn-outline-primary" onclick="filterFAQ('Returns')">Returns</button>
+            </div>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="accordion" id="faqAccordion">
+            @foreach (var faq in Model.Select((item, index) => new { Item = item, Index = index }))
+            {
+                <div class="accordion-item border-0 mb-3 shadow-sm faq-item" data-category="@faq.Item.Category">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button @(faq.Index > 0 ? "collapsed" : "")" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#faq@(faq.Index)">
+                            <span class="fw-semibold">@faq.Item.Question</span>
+                            <span class="badge bg-secondary ms-3">@faq.Item.Category</span>
+                        </button>
+                    </h2>
+                    <div id="faq@(faq.Index)" class="accordion-collapse collapse @(faq.Index == 0 ? "show" : "")"
+                         data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            @faq.Item.Answer
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <i class="fa-regular fa-circle-question fa-4x text-muted mb-3"></i>
+            <h4>No FAQs available</h4>
+            <p class="text-muted">Check back later for updated information.</p>
+        </div>
+    }
+
+    <!-- Still Need Help -->
+    <div class="text-center mt-5 p-5 bg-light rounded-3">
+        <h4 class="fw-bold mb-3">Still need help?</h4>
+        <p class="text-muted mb-4">Can't find what you're looking for? Contact our support team.</p>
+        <a href="@Url.Action("Contact", "Navbar")" class="btn btn-primary btn-lg">
+            <i class="fa-regular fa-envelope me-2"></i>Contact Support
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function filterFAQ(category) {
+            // Update active button
+            document.querySelectorAll('.btn-outline-primary').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Filter items
+            const items = document.querySelectorAll('.faq-item');
+            items.forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function searchFAQ() {
+            const searchTerm = document.getElementById('searchFAQ').value.toLowerCase();
+            const items = document.querySelectorAll('.faq-item');
+
+            items.forEach(item => {
+                const question = item.querySelector('.accordion-button').innerText.toLowerCase();
+                if (question.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
+}

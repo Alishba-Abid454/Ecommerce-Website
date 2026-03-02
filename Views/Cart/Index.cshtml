@@ -1,0 +1,1043 @@
+﻿@model EcommerceFullstackDesign.ViewModels.CartPageViewModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "My Cart";
+}
+
+<style>
+    /* Main Styles - Exactly like the image */
+    body {
+        background-color: #F4F7FA;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .container-custom {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+
+    /* Header */
+    .page-title {
+        font-size: 28px;
+        font-weight: 600;
+        color: #1A1A1A;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .page-title span {
+            background: #EFF2F4;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #505050;
+        }
+
+    /* Main Cart Grid */
+    .cart-grid {
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 30px;
+    }
+
+    /* Cart Items Section */
+    .cart-items-section {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid #E8ECEF;
+        overflow: hidden;
+    }
+
+    .cart-item {
+        padding: 24px;
+        border-bottom: 1px solid #E8ECEF;
+        display: grid;
+        grid-template-columns: 100px 1fr auto;
+        gap: 20px;
+        position: relative;
+    }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+    .item-image {
+        width: 100px;
+        height: 100px;
+        background: #F7F9FC;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #EDF2F7;
+    }
+
+        .item-image img {
+            max-width: 80px;
+            max-height: 80px;
+            object-fit: contain;
+        }
+
+    .item-details h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1A1A1A;
+        margin-bottom: 8px;
+    }
+
+    .item-specs {
+        font-size: 13px;
+        color: #6C7A8A;
+        margin-bottom: 12px;
+        line-height: 1.5;
+    }
+
+    .seller-info {
+        font-size: 13px;
+        color: #6C7A8A;
+        margin-bottom: 12px;
+    }
+
+        .seller-info strong {
+            color: #1A1A1A;
+            font-weight: 500;
+        }
+
+    .item-actions {
+        display: flex;
+        gap: 20px;
+    }
+
+        .item-actions button {
+            background: none;
+            border: none;
+            color: #FA3434;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+            .item-actions button:last-child {
+                color: #0D6EFD;
+            }
+
+            .item-actions button i {
+                font-size: 14px;
+            }
+
+            .item-actions button:hover {
+                text-decoration: underline;
+            }
+
+    .item-price-qty {
+        text-align: right;
+    }
+
+    .current-price {
+        font-size: 22px;
+        font-weight: 700;
+        color: #1A1A1A;
+        margin-bottom: 10px;
+    }
+
+    .quantity-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0;
+        border: 1px solid #E8ECEF;
+        border-radius: 8px;
+        width: fit-content;
+        float: right;
+        overflow: hidden;
+    }
+
+        .quantity-wrapper button {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: #F7F9FC;
+            color: #1A1A1A;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+            .quantity-wrapper button:hover {
+                background: #E8ECEF;
+            }
+
+        .quantity-wrapper input {
+            width: 50px;
+            height: 36px;
+            text-align: center;
+            border: none;
+            border-left: 1px solid #E8ECEF;
+            border-right: 1px solid #E8ECEF;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1A1A1A;
+            background: white;
+            -moz-appearance: textfield;
+        }
+
+            .quantity-wrapper input::-webkit-outer-spin-button,
+            .quantity-wrapper input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            .quantity-wrapper input:focus {
+                outline: none;
+            }
+
+    /* Coupon Card */
+    .coupon-card {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid #E8ECEF;
+        padding: 24px;
+        margin-bottom: 20px;
+    }
+
+        .coupon-card h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1A1A1A;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+    .coupon-input-group {
+        display: flex;
+        gap: 10px;
+    }
+
+        .coupon-input-group input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #E8ECEF;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+            .coupon-input-group input:focus {
+                outline: none;
+                border-color: #0D6EFD;
+            }
+
+        .coupon-input-group button {
+            padding: 12px 24px;
+            background: #0D6EFD;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+            .coupon-input-group button:hover {
+                background: #0b5ed7;
+            }
+
+    /* Order Summary */
+    .summary-card {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid #E8ECEF;
+        padding: 24px;
+        position: sticky;
+        top: 20px;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        font-size: 14px;
+        color: #1A1A1A;
+    }
+
+        .summary-row.total {
+            border-top: 2px solid #E8ECEF;
+            margin-top: 12px;
+            padding-top: 20px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+            .summary-row.total span:last-child {
+                color: #0D6EFD;
+                font-size: 22px;
+            }
+
+    .discount-amount {
+        color: #FA3434;
+    }
+
+    .tax-amount {
+        color: #00B517;
+    }
+
+    .btn-checkout {
+        width: 100%;
+        padding: 16px;
+        background: #00B517;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        margin: 20px 0 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+        .btn-checkout:hover {
+            background: #009c14;
+        }
+
+    /* Payment Icons */
+    .payment-icons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 16px;
+    }
+
+        .payment-icons i {
+            font-size: 28px;
+            color: #5D6C7B;
+        }
+
+            .payment-icons i.fa-cc-visa {
+                color: #1A1F71;
+            }
+
+            .payment-icons i.fa-cc-mastercard {
+                color: #F79E1B;
+            }
+
+            .payment-icons i.fa-cc-amex {
+                color: #2E77BB;
+            }
+
+            .payment-icons i.fa-cc-paypal {
+                color: #003087;
+            }
+
+    /* Saved for Later Section */
+    .saved-section {
+        margin-top: 40px;
+    }
+
+    .section-header {
+        font-size: 20px;
+        font-weight: 600;
+        color: #1A1A1A;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .saved-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+
+    .saved-card {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid #E8ECEF;
+        padding: 20px;
+    }
+
+    .saved-image {
+        height: 140px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #F7F9FC;
+        border-radius: 12px;
+        margin-bottom: 15px;
+    }
+
+        .saved-image img {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: contain;
+        }
+
+    .saved-price {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1A1A1A;
+        margin-bottom: 8px;
+    }
+
+    .saved-title {
+        font-size: 13px;
+        color: #6C7A8A;
+        margin-bottom: 15px;
+        line-height: 1.4;
+    }
+
+    .saved-card button {
+        width: 100%;
+        padding: 10px;
+        background: white;
+        border: 1px solid #0D6EFD;
+        border-radius: 8px;
+        color: #0D6EFD;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+    }
+
+        .saved-card button:hover {
+            background: #0D6EFD;
+            color: white;
+        }
+
+    /* Discount Banner */
+    .discount-banner {
+        background: linear-gradient(135deg, #003D7C 0%, #0056A7 100%);
+        border-radius: 16px;
+        padding: 40px;
+        margin-top: 40px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .discount-banner::before {
+            content: '\f06b';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 40px;
+            bottom: 20px;
+            font-size: 120px;
+            color: rgba(255,255,255,0.1);
+        }
+
+        .discount-banner h3 {
+            color: white;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .discount-banner p {
+            color: rgba(255,255,255,0.8);
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+    .btn-shop {
+        background: #FF9017;
+        color: white;
+        padding: 14px 32px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        border: none;
+        cursor: pointer;
+    }
+
+        .btn-shop:hover {
+            background: #e68200;
+        }
+
+    /* Empty Cart */
+    .empty-cart {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border-radius: 16px;
+    }
+
+        .empty-cart i {
+            font-size: 60px;
+            color: #ADB7C2;
+            margin-bottom: 16px;
+        }
+
+        .empty-cart h3 {
+            font-size: 20px;
+            color: #1A1A1A;
+            margin-bottom: 8px;
+        }
+
+        .empty-cart p {
+            color: #6C7A8A;
+            margin-bottom: 20px;
+        }
+
+    /* Loading Spinner */
+    .loading-spinner {
+        display: none;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #0D6EFD;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 40px;
+        font-size: 14px;
+        z-index: 9999;
+        box-shadow: 0 4px 12px rgba(13,110,253,0.3);
+    }
+
+        .loading-spinner i {
+            margin-right: 8px;
+            animation: spin 1s linear infinite;
+        }
+
+    @@keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    /* Toast Notification */
+    .toast-message {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: white;
+        border-left: 4px solid #00B517;
+        border-radius: 8px;
+        padding: 16px 24px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        z-index: 9999;
+        animation: slideIn 0.3s ease;
+    }
+
+        .toast-message i {
+            font-size: 20px;
+        }
+
+        .toast-message.success i {
+            color: #00B517;
+        }
+
+        .toast-message.error i {
+            color: #FA3434;
+        }
+
+        .toast-message.info i {
+            color: #0D6EFD;
+        }
+
+    /* Responsive */
+    @@media (max-width: 992px) {
+        .cart-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .saved-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .cart-item {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .item-price-qty {
+            text-align: left;
+        }
+
+        .quantity-wrapper {
+            float: left;
+        }
+
+        .saved-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<!-- Loading Spinner -->
+<div class="loading-spinner" id="loadingSpinner">
+    <i class="fa-solid fa-circle-notch fa-spin"></i>
+    Updating cart...
+</div>
+
+<div class="container-custom">
+    <!-- Page Title with Item Count -->
+    <h1 class="page-title">
+        My cart
+        <span id="cartItemCount">@(Model.CartSummary?.Items?.Sum(x => x.Quantity) ?? 0)</span>
+    </h1>
+
+    @if (Model.CartSummary == null || !Model.CartSummary.Items.Any())
+    {
+        <div class="empty-cart">
+            <i class="fa-regular fa-cart-circle-plus"></i>
+            <h3>Your cart is empty</h3>
+            <p>Looks like you haven't added anything to your cart yet</p>
+            <a href="/" class="btn-checkout" style="display: inline-block; width: auto; padding: 12px 32px;">
+                <i class="fa-regular fa-shop me-2"></i>Continue Shopping
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="cart-grid">
+            <!-- Left Column - Cart Items -->
+            <div>
+                <div class="cart-items-section">
+                    @foreach (var item in Model.CartSummary.Items)
+                    {
+                        <div class="cart-item" id="cart-item-@item.CartItemId" data-item-id="@item.CartItemId">
+                            <!-- Product Image -->
+                            <div class="item-image">
+                                <img src="@item.ImageUrl" alt="@item.Name">
+                            </div>
+
+                            <!-- Product Details -->
+                            <div class="item-details">
+                                <h3>@item.Name</h3>
+                                <div class="item-specs">
+                                    Size: medium, Color: blue, Material: Plastic
+                                </div>
+                                <div class="seller-info">
+                                    Seller: <strong>Artel Market</strong>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="remove-item" data-id="@item.CartItemId" type="button">
+                                        <i class="fa-regular fa-trash-can"></i> Remove
+                                    </button>
+                                    <button class="save-item" data-id="@item.CartItemId" type="button">
+                                        <i class="fa-regular fa-bookmark"></i> Save for later
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Price and Quantity -->
+                            <div class="item-price-qty">
+                                <div class="current-price" id="price-@item.CartItemId">$@((item.Price * item.Quantity).ToString("F2"))</div>
+                                <div class="quantity-wrapper">
+                                    <button class="qty-decrease" type="button" data-id="@item.CartItemId" data-price="@item.Price">−</button>
+                                    <input type="number" class="qty-input" id="qty-@item.CartItemId"
+                                           value="@item.Quantity" min="1" max="999" step="1"
+                                           data-id="@item.CartItemId" data-price="@item.Price">
+                                    <button class="qty-increase" type="button" data-id="@item.CartItemId" data-price="@item.Price">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Saved for Later Section -->
+                <div class="saved-section">
+                    <h3 class="section-header">
+                        <i class="fa-regular fa-bookmark" style="color: #0D6EFD;"></i>
+                        Saved for later
+                    </h3>
+                    <div class="saved-grid">
+                        @if (Model.RecommendedProducts != null && Model.RecommendedProducts.Any())
+                        {
+                            @foreach (var product in Model.RecommendedProducts.Take(4))
+                            {
+                                <div class="saved-card">
+                                    <div class="saved-image">
+                                        <img src="@(product.ImageUrl ?? "/images/default.png")" alt="@product.Name">
+                                    </div>
+                                    <div class="saved-price">$@product.Price.ToString("F2")</div>
+                                    <div class="saved-title">@product.Name</div>
+                                    <button class="move-to-cart" data-product-id="@product.Id" type="button">
+                                        <i class="fa-regular fa-cart-plus"></i> Move to cart
+                                    </button>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <!-- Default saved items -->
+                            <div class="saved-card">
+                                <div class="saved-image">
+                                    <img src="/images/gopro.png" alt="GoPro">
+                                </div>
+                                <div class="saved-price">$99.50</div>
+                                <div class="saved-title">GoPro HERO6 4K Action Camera - Black</div>
+                                <button class="move-to-cart" data-product-id="1" type="button">
+                                    <i class="fa-regular fa-cart-plus"></i> Move to cart
+                                </button>
+                            </div>
+                            <div class="saved-card">
+                                <div class="saved-image">
+                                    <img src="/images/camera.png" alt="Camera">
+                                </div>
+                                <div class="saved-price">$99.50</div>
+                                <div class="saved-title">GoPro HERO6 4K Action Camera - Black</div>
+                                <button class="move-to-cart" data-product-id="2" type="button">
+                                    <i class="fa-regular fa-cart-plus"></i> Move to cart
+                                </button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Order Summary -->
+            <div>
+                <!-- Coupon Card -->
+                <div class="coupon-card">
+                    <h4>
+                        <i class="fa-solid fa-ticket" style="color: #0D6EFD;"></i>
+                        Have a coupon?
+                    </h4>
+                    <div class="coupon-input-group">
+                        <input type="text" placeholder="Add coupon" id="couponCode">
+                        <button id="applyCouponBtn" type="button">Apply</button>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="summary-card">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$@Model.CartSummary.Subtotal.ToString("F2")</span>
+                    </div>
+
+                    @if (Model.CartSummary.Discount > 0)
+                    {
+                        <div class="summary-row">
+                            <span>Discount:</span>
+                            <span class="discount-amount" id="discount">-$@Model.CartSummary.Discount.ToString("F2")</span>
+                        </div>
+                    }
+
+                    @if (Model.CartSummary.Tax > 0)
+                    {
+                        <div class="summary-row">
+                            <span>Tax:</span>
+                            <span class="tax-amount" id="tax">+$@Model.CartSummary.Tax.ToString("F2")</span>
+                        </div>
+                    }
+
+                    <div class="summary-row">
+                        <span>Shipping:</span>
+                        <span style="color: #00B517;">Free</span>
+                    </div>
+
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="total">$@Model.CartSummary.Total.ToString("F2")</span>
+                    </div>
+
+                    <button class="btn-checkout" id="checkoutBtn" type="button">
+                        <i class="fa-regular fa-circle-check"></i>
+                        Checkout
+                    </button>
+
+                    <div class="payment-icons">
+                        <i class="fa-brands fa-cc-visa"></i>
+                        <i class="fa-brands fa-cc-mastercard"></i>
+                        <i class="fa-brands fa-cc-amex"></i>
+                        <i class="fa-brands fa-cc-paypal"></i>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 16px;">
+                        <button id="clearCartBtn" style="background: none; border: none; color: #FA3434; font-size: 13px; cursor: pointer;" type="button">
+                            <i class="fa-regular fa-trash-can me-1"></i> Remove all
+                        </button>
+                        <span style="margin: 0 10px; color: #E8ECEF;">|</span>
+                        <a href="/" style="color: #0D6EFD; font-size: 13px; text-decoration: none;">
+                            <i class="fa-regular fa-arrow-left me-1"></i> Back to shop
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Discount Banner -->
+        <div class="discount-banner">
+            <h3>Super discount on more than 100 USD</h3>
+            <p>Have you ever finally just write dummy info</p>
+            <a href="#" class="btn-shop">
+                Shop now <i class="fa-regular fa-arrow-right"></i>
+            </a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // ========== UTILITY FUNCTIONS ==========
+            function showLoading() {
+                $('#loadingSpinner').show();
+            }
+
+            function hideLoading() {
+                $('#loadingSpinner').hide();
+            }
+
+            function showToast(message, type = 'success') {
+                const toast = $(`
+                    <div class="toast-message ${type}">
+                        <i class="fa-regular ${type === 'success' ? 'fa-circle-check' : type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-info'}"></i>
+                        <span>${message}</span>
+                    </div>
+                `).appendTo('body');
+
+                setTimeout(() => {
+                    toast.fadeOut(300, function() { $(this).remove(); });
+                }, 3000);
+            }
+
+            function updateOrderSummary(data) {
+                $('#subtotal').text('$' + (data.subtotal || 0).toFixed(2));
+                $('#total').text('$' + (data.total || 0).toFixed(2));
+
+                if ($('#discount').length) {
+                    $('#discount').text('-$' + (data.discount || 0).toFixed(2));
+                }
+                if ($('#tax').length) {
+                    $('#tax').text('+$' + (data.tax || 0).toFixed(2));
+                }
+
+                $('#cartItemCount').text(data.itemCount || 0);
+            }
+
+            // ========== QUANTITY UPDATE ==========
+            $('.qty-increase').on('click', function() {
+                const cartItemId = $(this).data('id');
+                const price = $(this).data('price');
+                const $input = $('#qty-' + cartItemId);
+                let currentQty = parseInt($input.val());
+                updateQuantity(cartItemId, currentQty + 1, price);
+            });
+
+            $('.qty-decrease').on('click', function() {
+                const cartItemId = $(this).data('id');
+                const price = $(this).data('price');
+                const $input = $('#qty-' + cartItemId);
+                let currentQty = parseInt($input.val());
+
+                if (currentQty > 1) {
+                    updateQuantity(cartItemId, currentQty - 1, price);
+                } else {
+                    // Agar quantity 1 hai aur decrease karte hain to remove kar do
+                    removeCartItem(cartItemId);
+                }
+            });
+
+            $('.qty-input').on('change', function() {
+                const cartItemId = $(this).data('id');
+                const price = $(this).data('price');
+                let newQty = parseInt($(this).val());
+
+                if (newQty < 1) newQty = 1;
+                if (isNaN(newQty)) newQty = 1;
+
+                $(this).val(newQty);
+                updateQuantity(cartItemId, newQty, price);
+            });
+
+            function updateQuantity(cartItemId, newQuantity, price) {
+                showLoading();
+
+                $.ajax({
+                    url: '/Cart/UpdateQuantity',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        cartItemId: cartItemId,
+                        quantity: newQuantity
+                    }),
+                    success: function(response) {
+                        if (response.success) {
+                            $('#qty-' + cartItemId).val(newQuantity);
+                            const newTotal = price * newQuantity;
+                            $('#price-' + cartItemId).text('$' + newTotal.toFixed(2));
+                            updateOrderSummary(response);
+                            showToast('Cart updated successfully!');
+                        } else {
+                            showToast('Error updating cart', 'error');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', error);
+                        showToast('Error updating cart', 'error');
+                    },
+                    complete: function() {
+                        hideLoading();
+                    }
+                });
+            }
+
+            // ========== REMOVE ITEM (NO CONFIRM) ==========
+            $('.remove-item').on('click', function() {
+                const cartItemId = $(this).data('id');
+                removeCartItem(cartItemId);
+            });
+
+            function removeCartItem(cartItemId) {
+                const $item = $('#cart-item-' + cartItemId);
+                showLoading();
+
+                $.ajax({
+                    url: '/Cart/Remove/' + cartItemId,
+                    type: 'POST',
+                    success: function(response) {
+                        if (response.success) {
+                            $item.fadeOut(300, function() {
+                                $(this).remove();
+                                updateOrderSummary(response);
+
+                                if ($('.cart-item').length === 0) {
+                                    location.reload();
+                                }
+                            });
+                            showToast('Item removed from cart');
+                        } else {
+                            showToast('Error removing item', 'error');
+                        }
+                    },
+                    error: function() {
+                        showToast('Error removing item', 'error');
+                    },
+                    complete: function() {
+                        hideLoading();
+                    }
+                });
+            }
+
+            // ========== CLEAR CART (NO CONFIRM) ==========
+            $('#clearCartBtn').on('click', function(e) {
+                e.preventDefault();
+
+                // No confirm dialog - direct clear
+                showLoading();
+
+                $.ajax({
+                    url: '/Cart/ClearCart',
+                    type: 'POST',
+                    success: function(response) {
+                        if (response.success) {
+                            location.reload();
+                            showToast('Cart cleared successfully');
+                        } else {
+                            showToast('Error clearing cart', 'error');
+                        }
+                    },
+                    error: function() {
+                        showToast('Error clearing cart', 'error');
+                    },
+                    complete: function() {
+                        hideLoading();
+                    }
+                });
+            });
+
+            // ========== SAVE FOR LATER ==========
+            $('.save-item').on('click', function() {
+                showToast('Feature coming soon!', 'info');
+            });
+
+            // ========== MOVE TO CART ==========
+            $('.move-to-cart').on('click', function() {
+                const productId = $(this).data('product-id');
+
+                showLoading();
+
+                $.ajax({
+                    url: '/Cart/AddToCart',
+                    type: 'POST',
+                    data: { productId: productId, quantity: 1 },
+                    success: function(response) {
+                        if (response.success) {
+                            showToast('Product moved to cart!');
+                            setTimeout(() => {
+                                location.reload();
+                            }, 1000);
+                        } else {
+                            showToast('Error moving to cart', 'error');
+                        }
+                    },
+                    error: function() {
+                        showToast('Error moving to cart', 'error');
+                    },
+                    complete: function() {
+                        hideLoading();
+                    }
+                });
+            });
+
+            // ========== CHECKOUT ==========
+            $('#checkoutBtn').on('click', function() {
+                window.location.href = '/Cart/Checkout';
+            });
+
+            // ========== APPLY COUPON ==========
+            $('#applyCouponBtn').on('click', function() {
+                const coupon = $('#couponCode').val();
+                if (coupon) {
+                    showToast(`Coupon ${coupon} applied!`);
+                } else {
+                    showToast('Please enter a coupon code', 'error');
+                }
+            });
+
+            // Allow Enter key in coupon input
+            $('#couponCode').on('keypress', function(e) {
+                if (e.which === 13) {
+                    $('#applyCouponBtn').click();
+                }
+            });
+        });
+    </script>
+}

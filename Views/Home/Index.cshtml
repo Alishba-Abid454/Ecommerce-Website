@@ -1,0 +1,583 @@
+﻿@model EcommerceFullstackDesign.ViewModels.HomeViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!-- Main Hero Section -->
+<div class="container mt-4">
+    <div class="main-hero-wrapper p-3 bg-white border rounded shadow-sm">
+        <div class="row g-3">
+            <!-- Left Sidebar Categories -->
+            <div class="col-lg-3">
+                <div class="nav flex-column category-nav">
+                    @if (Model.Categories != null && Model.Categories.Any())
+                    {
+                        @foreach (var category in Model.Categories.Take(8))
+                        {
+                            <a class="nav-link" href="@Url.Action("Index", "Products", new { categoryId = category.Id })">
+                                @category.Name
+                            </a>
+                        }
+                        <a class="nav-link text-primary" href="@Url.Action("Index", "Products")">More category</a>
+                    }
+                </div>
+            </div>
+
+            <!-- Center Hero Banner -->
+            <div class="col-lg-6">
+                @if (Model.HeroBanner != null)
+                {
+                    <div class="hero-banner p-5 text-dark rounded"
+                         style="background-image: url('/image/headphoneimageforbody.png'); background-color: #AFDCD3; background-size: cover; min-height: 400px;">
+                        <h3 class="fw-normal">@Model.HeroBanner.Subtitle</h3>
+                        <h2 class="fw-bold">@Model.HeroBanner.Title</h2>
+                        @if (!string.IsNullOrEmpty(Model.HeroBanner.ButtonText))
+                        {
+                            <a href="@Model.HeroBanner.ButtonLink" class="btn btn-white bg-white mt-3 px-4 border">@Model.HeroBanner.ButtonText</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Products")" class="btn btn-white bg-white mt-3 px-4 border">Learn more</a>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="hero-banner p-5 text-dark rounded"
+                         style="background-image: url('/image/headphoneimageforbody.png'); background-color: #AFDCD3; background-size: cover; min-height: 300px;">
+                        <h3 class="fw-normal">Latest trending</h3>
+                        <h2 class="fw-bold">Electronic items</h2>
+                        <a href="@Url.Action("Index", "Products")" class="btn btn-white bg-white mt-3 px-4 border">Learn more</a>
+                    </div>
+                }
+            </div>
+
+            <!-- Right Side User Cards -->
+            <div class="col-lg-3">
+                <div class="d-flex flex-column gap-2 h-100">
+                    <div class="user-card p-3 rounded" style="background-color: #E3F0FF;">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="avatar me-2 bg-secondary rounded-circle" style="width:40px; height:40px; overflow:hidden;">
+                                <img src="~/Image/profile.png" class="w-100 h-100" style="object-fit: cover;" alt="avatar" />
+                            </div>
+                            <span class="fw-normal" style="font-size: 14px; color: #1C1C1C; line-height: 1.2;">
+                                @Model.UserGreeting<br>@Model.UserSubGreeting
+                            </span>
+                        </div>
+                        <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-sm w-100 mb-2">Join now</a>
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-white bg-white btn-sm w-100 text-primary border">Log in</a>
+                    </div>
+
+                    @if (Model.PromotionCards != null && Model.PromotionCards.Any())
+                    {
+                        @foreach (var card in Model.PromotionCards.Take(2))
+                        {
+                            <div class="promo-card p-3 rounded text-white"
+                                 style="background-color: @card.BackgroundColor; cursor: pointer;"
+                                 onclick="window.location.href='@(card.ButtonLink ?? "#")'">
+                                @card.Description
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="promo-card p-3 rounded text-white" style="background-color: #F38332;">
+                            Get US $10 off with a new supplier
+                        </div>
+                        <div class="promo-card p-3 rounded text-white" style="background-color: #55BDC3;">
+                            Send quotes with supplier preferences
+                        </div>
+                    }
+
+                    <!-- Cart Count Display -->
+                    <div class="mt-2 text-center">
+                        <a asp-controller="Cart" asp-action="Index" class="text-decoration-none">
+                            <span class="badge bg-primary" id="cartCount">Cart: @Model.CartCount items</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Deals and Offers Section -->
+@if (Model.DealsAndOffers != null && Model.DealsAndOffers.Any())
+{
+    <section class="container mt-5">
+        <div class="border rounded bg-white overflow-hidden">
+            <div class="row g-0">
+                <div class="col-md-3 p-4 border-end">
+                    <h5>Deals and offers</h5>
+                    <p class="text-muted">Hygiene equipments</p>
+                    <div class="d-flex text-center mt-3" id="countdown">
+                        <div class="bg-secondary text-white p-2 rounded me-1"><b id="days">04</b><br><small>Days</small></div>
+                        <div class="bg-secondary text-white p-2 rounded me-1"><b id="hours">13</b><br><small>Hour</small></div>
+                        <div class="bg-secondary text-white p-2 rounded me-1"><b id="mins">34</b><br><small>Min</small></div>
+                        <div class="bg-secondary text-white p-2 rounded"><b id="secs">56</b><br><small>Sec</small></div>
+                    </div>
+                </div>
+
+                @foreach (var product in Model.DealsAndOffers.Take(4))
+                {
+                    <div class="col p-4 border-end text-center">
+                        <a href="@Url.Action("Details", "Products", new { id = product.Id })" class="text-decoration-none text-dark">
+                            <img src="@product.ImageUrl" height="100" alt="@product.Name" style="object-fit: contain;" />
+                            <p class="mt-2 mb-0">@product.Name</p>
+                            @if (product.OldPrice.HasValue && product.OldPrice > product.Price)
+                            {
+                                var discount = ((product.OldPrice.Value - product.Price) / product.OldPrice.Value * 100);
+                                <span class="badge bg-danger rounded-pill">-@discount.ToString("F0")%</span>
+                                <div>
+                                    <span class="text-muted text-decoration-line-through">$@product.OldPrice.Value.ToString("F2")</span>
+                                    <span class="text-danger fw-bold ms-2">$@product.Price.ToString("F2")</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="fw-bold">$@product.Price.ToString("F2")</span>
+                            }
+                        </a>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary mt-2 add-to-cart"
+                                    onclick="addToCartAndRedirect(@product.Id, 1)">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+ 
+<!-- Category Blocks -->
+<section class="container mt-5">
+    <!-- Home and outdoor block -->
+    <div class="category-block bg-white border rounded mb-4 d-flex overflow-hidden">
+        <div class="category-sidebar-banner p-4" style="background-image: url('/Image/Services/homeandoutdoor.jpg'); background-size: cover; width: 280px;">
+            <h5 class="fw-bold mb-3">Home and outdoor</h5>
+            <a href="@Url.Action("Index", "Products", new { category = "Home & Living" })" class="btn btn-white bg-white border px-3 btn-sm shadow-sm">Source now</a>
+        </div>
+        <div class="category-items flex-grow-1">
+            <div class="row g-0 h-100">
+                @if (Model.ProductsByCategory != null && Model.ProductsByCategory.ContainsKey("Home & Living") && Model.ProductsByCategory["Home & Living"].Any())
+                {
+                    @foreach (var product in Model.ProductsByCategory["Home & Living"].Take(4))
+                    {
+                        <div class="col-md-3 border-start border-bottom p-3 item-box">
+                            <a href="@Url.Action("ProductDetails", "Home", new { id = product.Id })" class="text-decoration-none text-dark">
+                                <p class="mb-0 small">@product.Name</p>
+                                <span class="text-muted small">From <br>$@product.Price.ToString("F2")</span>
+                                <img src="@product.ImageUrl" class="float-end" width="60" alt="@product.Name" style="object-fit: contain;">
+                            </a>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <!-- Static fallback items -->
+                    <div class="col-md-3 border-start border-bottom p-3 item-box">
+                        <p class="mb-0 small">Soft chairs</p>
+                        <span class="text-muted small">From <br>USD 19</span>
+                        <img src="/image/sofa.png" class="float-end" width="60" alt="chair">
+                    </div>
+                    <div class="col-md-3 border-start border-bottom p-3 item-box">
+                        <p class="mb-0 small">Lamps</p>
+                        <span class="text-muted small">From <br>USD 19</span>
+                        <img src="/image/lamps.png" class="float-end" width="60" alt="lamp">
+                    </div>
+                    <div class="col-md-3 border-start border-bottom p-3 item-box">
+                        <p class="mb-0 small">Matress</p>
+                        <span class="text-muted small">From <br>USD 19</span>
+                        <img src="/image/matress.png" class="float-end" width="60" alt="matress">
+                    </div>
+                    <div class="col-md-3 border-start border-bottom p-3 item-box">
+                        <p class="mb-0 small">Water pot</p>
+                        <span class="text-muted small">From <br>USD 19</span>
+                        <img src="/image/pot.png" class="float-end" width="60" alt="pot">
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Consumer electronics block -->
+    <div class="category-block bg-white border rounded mb-4 d-flex overflow-hidden">
+        <div class="category-sidebar-banner p-4" style="background-image: url('/Image/Gadgets.png'); background-size: cover; width: 280px;">
+            <h5 class="fw-bold mb-3">Consumer electronics and gadgets</h5>
+            <a href="@Url.Action("Index", "Products", new { category = "Electronics" })" class="btn btn-white bg-white border px-3 btn-sm shadow-sm">Source now</a>
+        </div>
+        <div class="category-items flex-grow-1">
+            <div class="row g-0 h-100">
+                @if (Model.ProductsByCategory != null && Model.ProductsByCategory.ContainsKey("Electronics") && Model.ProductsByCategory["Electronics"].Any())
+                {
+                    @foreach (var product in Model.ProductsByCategory["Electronics"].Take(4))
+                    {
+                        <div class="col-md-3 border-start border-bottom p-3 item-box">
+                            <a href="@Url.Action("ProductDetails", "Home", new { id = product.Id })" class="text-decoration-none text-dark">
+                                <p class="mb-0 small">@product.Name</p>
+                                <span class="text-muted small">From <br>$@product.Price.ToString("F2")</span>
+                                <img src="@product.ImageUrl" class="float-end" width="60" alt="@product.Name" style="object-fit: contain;">
+                            </a>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <!-- Static fallback items -->
+                    <div class="col-md-3 border-start border-bottom p-3 item-box">
+                        <p class="mb-0 small">Smart watches</p>
+                        <span class="text-muted small">From <br>USD 19</span>
+                        <img src="/images/products/8.jpg" class="float-end" width="60" alt="watch">
+                    </div>
+                    <div class="col-md-3 border-start border-bottom p-3 item-box">
+                        <p class="mb-0 small">Cameras</p>
+                        <span class="text-muted small">From <br>USD 89</span>
+                        <img src="/images/products/6.jpg" class="float-end" width="60" alt="camera">
+                    </div>
+                    <div class="col-md-3 border-start border-bottom p-3 item-box">
+                        <p class="mb-0 small">Headphones</p>
+                        <span class="text-muted small">From <br>USD 10</span>
+                        <img src="/images/products/9.jpg" class="float-end" width="60" alt="headphones">
+                    </div>
+                    <div class="col-md-3 border-start border-bottom p-3 item-box">
+                        <p class="mb-0 small">Smart watches</p>
+                        <span class="text-muted small">From <br>USD 90</span>
+                        <img src="/images/products/10.jpg" class="float-end" width="60" alt="watch">
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Inquiry Section -->
+    <div class="inquiry-section rounded p-5 text-white position-relative overflow-hidden" style="background-image: url('/image/Background image.png'); background-size: cover;">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <h2 class="fw-bold mb-3">An easy way to send requests to all suppliers</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
+            </div>
+            <div class="col-lg-5">
+                <div class="bg-white p-4 rounded text-dark shadow">
+                    <h5 class="fw-bold mb-3">Send quote to suppliers</h5>
+                    <form asp-action="SendInquiry" method="post">
+                        <input type="text" name="product" class="form-control mb-3" placeholder="What item you need?" required>
+                        <textarea name="details" class="form-control mb-3" rows="3" placeholder="Type more details" required></textarea>
+                        <div class="d-flex gap-2 mb-3">
+                            <input type="number" name="quantity" class="form-control" placeholder="Quantity" required>
+                            <select name="unit" class="form-select">
+                                <option>Pcs</option>
+                                <option>Box</option>
+                                <option>Kg</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary px-4">Send inquiry</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recommended items -->
+<section class="container mt-5">
+    <h4 class="fw-bold mb-4">Recommended items</h4>
+
+    @if (Model.RecommendedItems != null && Model.RecommendedItems.Any())
+    {
+        <div class="row row-cols-lg-4 row-cols-md-3 row-cols-2 g-4">
+            @foreach (var product in Model.RecommendedItems.Take(8))
+            {
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <a href="@Url.Action("Details", "Products", new { id = product.Id })" class="text-decoration-none">
+                            <div class="text-center p-3">
+                                <img src="@product.ImageUrl" class="img-fluid" style="height: 150px; object-fit: contain;" alt="@product.Name">
+                            </div>
+                            <div class="card-body p-3 pt-0">
+                                <h5 class="fw-bold text-dark mb-2">$@product.Price.ToString("F2")</h5>
+                                <p class="card-text text-muted small">@product.Name</p>
+                            </div>
+                        </a>
+                        <div class="card-footer bg-white border-0 pb-3">
+                            <button class="btn btn-sm btn-outline-primary w-100 add-to-cart"
+                                    onclick="addToCartAndRedirect(@product.Id, 1)">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</section>
+
+<!-- Services Section -->
+@if (Model.Services != null && Model.Services.Any())
+{
+    <section class="container mt-5">
+        <h4 class="fw-bold mb-4">Our extra services</h4>
+        <div class="row g-3 mb-5">
+            @foreach (var service in Model.Services.Take(4))
+            {
+                <div class="col-lg-3 col-md-6">
+                    <div class="service-card border rounded bg-white overflow-hidden position-relative h-100">
+                        <div class="service-img" style="background-image: url('@service.ImageUrl'); height: 120px; background-size: cover;"></div>
+                        <div class="p-3">
+                            <p class="mb-0 fw-medium">@service.Title</p>
+                            <small class="text-muted">@service.Description</small>
+                        </div>
+                        @if (!string.IsNullOrEmpty(service.Icon))
+                        {
+                            <div class="service-icon shadow-sm position-absolute top-0 end-0 m-2 bg-white rounded-circle p-2">
+                                <i class="fa @service.Icon"></i>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+}
+
+<!-- Suppliers by region -->
+@if (Model.Suppliers != null && Model.Suppliers.Any())
+{
+    <section class="container mt-5">
+        <h4 class="fw-bold mb-4">Suppliers by region</h4>
+        <div class="row row-cols-lg-5 row-cols-md-3 row-cols-2 g-3">
+            @foreach (var supplier in Model.Suppliers.Take(10))
+            {
+                <div class="col">
+                    <div class="d-flex align-items-center">
+                        @if (!string.IsNullOrEmpty(supplier.FlagIcon))
+                        {
+                            <img src="@supplier.FlagIcon" class="me-2" width="30" alt="@supplier.Country">
+                        }
+                        <div>
+                            <p class="mb-0 small fw-bold">@supplier.Name</p>
+                            <small class="text-muted" style="font-size: 11px;">@supplier.Website</small>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+}
+
+<!-- Newsletter Section -->
+<section class="container mt-5 mb-5">
+    <div class="bg-light p-5 rounded text-center">
+        <h4>Subscribe to our newsletter</h4>
+        <p class="text-muted">Get the latest updates on new products and upcoming sales</p>
+        <form class="row g-3 justify-content-center">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="email" class="form-control" placeholder="Enter your email">
+                    <button class="btn btn-primary" type="button">Subscribe</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        function addToCartAndRedirect(productId, quantity) {
+            fetch('/Home/AddToCart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    productId: productId,
+                    quantity: quantity
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/Cart/Index';
+                } else {
+                    alert('Error adding product to cart');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error adding product to cart');
+            });
+        }
+
+        function addToCart(productId, quantity) {
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Adding...';
+            button.disabled = true;
+
+            fetch('/Home/AddToCart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    productId: productId,
+                    quantity: quantity
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const cartBadge = document.getElementById('cartCount');
+                    if (cartBadge) {
+                        cartBadge.textContent = `Cart: ${data.count} items`;
+                    }
+                    showNotification('Product added to cart!', 'success');
+                } else {
+                    showNotification(data.message || 'Error adding product to cart', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Error adding product to cart', 'error');
+            })
+            .finally(() => {
+                button.textContent = originalText;
+                button.disabled = false;
+            });
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'success' ? 'success' : 'danger'} notification-toast`;
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.zIndex = '9999';
+            notification.style.minWidth = '250px';
+            notification.style.padding = '15px';
+            notification.style.borderRadius = '5px';
+            notification.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+            notification.style.animation = 'slideIn 0.3s ease-out';
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Countdown Timer
+        function updateCountdown() {
+            var countDownDate = new Date();
+            countDownDate.setDate(countDownDate.getDate() + 4);
+
+            var x = setInterval(function() {
+                var now = new Date().getTime();
+                var distance = countDownDate - now;
+
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('mins').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('secs').textContent = seconds.toString().padStart(2, '0');
+
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById('countdown').innerHTML = '<div class="bg-secondary text-white p-2 rounded">Offer Expired</div>';
+                }
+            }, 1000);
+        }
+
+        // Load cart count on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCountdown();
+
+            fetch('/Home/GetUserCartCount')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const cartBadge = document.getElementById('cartCount');
+                        if (cartBadge) {
+                            cartBadge.textContent = `Cart: ${data.count} items`;
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading cart count:', error);
+                });
+        });
+    </script>
+
+    <style>
+        @@keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @@keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .category-nav .nav-link {
+            color: #333;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+            .category-nav .nav-link:hover {
+                background-color: #f0f0f0;
+            }
+
+        .item-box {
+            min-height: 120px;
+            transition: all 0.2s;
+        }
+
+            .item-box:hover {
+                background-color: #f8f9fa;
+            }
+
+        .service-card {
+            transition: transform 0.2s;
+        }
+
+            .service-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+}
+
+

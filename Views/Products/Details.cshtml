@@ -1,0 +1,225 @@
+﻿@model EcommerceFullstackDesign.Models.ProductViewModel
+
+@{
+    ViewData["Title"] = Model.Name;
+    var relatedProducts = ViewBag.RelatedProducts as List<ProductViewModel> ?? new List<ProductViewModel>();
+    var breadcrumb = ViewBag.Breadcrumb as List<BreadcrumbItem> ?? new List<BreadcrumbItem>();
+}
+
+<div class="container py-3">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb small text-muted">
+            @foreach (var item in breadcrumb)
+            {
+                if (item.IsActive)
+                {
+                    <li class="breadcrumb-item active" aria-current="page">@item.Title</li>
+                }
+                else
+                {
+                    <li class="breadcrumb-item">
+                        <a href="@item.Url" class="text-decoration-none text-muted">@item.Title</a>
+                    </li>
+                }
+            }
+        </ol>
+    </nav>
+
+    <!-- Product Details -->
+    <div class="row g-4">
+        <!-- Product Images -->
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="position-relative">
+                    <img src="@Model.ImageUrl" class="img-fluid p-4" alt="@Model.Name" id="mainProductImage">
+                    @if (Model.DiscountPercentage.HasValue)
+                    {
+                        <span class="position-absolute top-0 start-0 badge bg-danger m-3 fs-6">-@Model.DiscountPercentage%</span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm p-4">
+                <h2 class="h4 mb-2">@Model.Name</h2>
+
+                @if (!string.IsNullOrEmpty(Model.Brand))
+                {
+                    <p class="text-muted mb-3">Brand: @Model.Brand</p>
+                }
+
+                <!-- Price -->
+                <div class="mb-3">
+                    @if (Model.OldPrice.HasValue)
+                    {
+                        <span class="h2 text-danger">$@Model.Price.ToString("F2")</span>
+                        <del class="text-muted ms-2">$@Model.OldPrice.Value.ToString("F2")</del>
+                    }
+                    else
+                    {
+                        <span class="h2 text-primary">$@Model.Price.ToString("F2")</span>
+                    }
+                </div>
+
+                <!-- Rating -->
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="text-warning">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= Math.Floor(Model.Rating))
+                            {
+                                <i class="fas fa-star"></i>
+                            }
+                            else if (i - 0.5 <= Model.Rating)
+                            {
+                                <i class="fas fa-star-half-alt"></i>
+                            }
+                            else
+                            {
+                                <i class="far fa-star"></i>
+                            }
+                        }
+                    </div>
+                    <span class="text-muted">@Model.Rating.ToString("F1") (@Model.ReviewCount reviews)</span>
+                    <span class="text-success">@Model.OrderCount orders</span>
+                </div>
+
+                <!-- Status -->
+                <div class="mb-3">
+                    @if (Model.IsVerified)
+                    {
+                        <span class="badge bg-info me-2"><i class="fas fa-check-circle"></i> Verified</span>
+                    }
+                    @if (Model.FreeShipping)
+                    {
+                        <span class="badge bg-success"><i class="fas fa-truck"></i> Free Shipping</span>
+                    }
+                </div>
+
+                <!-- Description -->
+                <div class="mb-4">
+                    <h6>Description</h6>
+                    <p class="text-muted">@Model.Description</p>
+                </div>
+
+                <!-- Quantity and Add to Cart -->
+                <div class="row g-3">
+                    <div class="col-auto">
+                        <div class="input-group" style="width: 120px;">
+                            <button class="btn btn-outline-secondary" type="button" id="decrementQty">-</button>
+                            <input type="text" class="form-control text-center" id="quantity" value="1" readonly>
+                            <button class="btn btn-outline-secondary" type="button" id="incrementQty">+</button>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary btn-lg w-100" id="addToCartDetail">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                    </div>
+                    </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <button class="btn btn-primary btn-lg w-100" type="button" onclick="location.href='@Url.Action("Index", "Home")'">
+                            <i class="fas fa-home"></i> Back to Home Page
+                        </button>
+                    </div>
+                </div>
+            @*<div>
+                    <button class="btn btn-primary btn-lg w-100"  type="button" onclick="location.href='@Url.Action("Index", "Home")'">
+                    Back to Home Page
+                </button>
+            </div>*@
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    @if (relatedProducts.Any())
+    {
+        <section class="mt-5">
+            <h4 class="fw-bold mb-4">Related Products</h4>
+            <div class="row g-4">
+                @foreach (var product in relatedProducts)
+                {
+                    <div class="col-lg-2 col-md-3 col-4">
+                        <div class="card h-100 border-0 shadow-sm product-card">
+                            <a href="@Url.Action("Details", new { id = product.Id })">
+                                <img src="@product.ImageUrl" class="card-img-top p-2" alt="@product.Name" style="height: 120px; object-fit: contain;">
+                            </a>
+                            <div class="card-body p-2">
+                                <a href="@Url.Action("Details", new { id = product.Id })" class="text-decoration-none text-dark">
+                                    <h6 class="card-title small">@product.Name</h6>
+                                    <span class="fw-bold">$@product.Price.ToString("F2")</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Quantity controls
+            $('#incrementQty').click(function() {
+                let qty = parseInt($('#quantity').val());
+                $('#quantity').val(qty + 1);
+            });
+
+            $('#decrementQty').click(function() {
+                let qty = parseInt($('#quantity').val());
+                if (qty > 1) {
+                    $('#quantity').val(qty - 1);
+                }
+            });
+
+            // Add to cart
+            $('#addToCartDetail').click(function() {
+                const quantity = parseInt($('#quantity').val());
+                addToCart(@Model.Id, quantity, false);
+            });
+
+            // Buy now
+            $('#buyNow').click(function() {
+                const quantity = parseInt($('#quantity').val());
+                addToCart(@Model.Id, quantity, true);
+            });
+
+            function addToCart(productId, quantity, redirectToCart = false) {
+                $.ajax({
+                    url: '/Home/AddToCart',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        productId: productId,
+                        quantity: quantity
+                    }),
+                    success: function(response) {
+                        if (response.success) {
+                            if (redirectToCart) {
+                                window.location.href = '/Cart/Index';
+                            } else {
+                                window.location.href = '/Cart/Index';
+                            }
+                        } else {
+                            alert(response.message || 'Error adding to cart');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        alert('Error adding to cart. Please try again.');
+                    }
+                });
+            }
+        });
+    </script>
+}
+
+
+

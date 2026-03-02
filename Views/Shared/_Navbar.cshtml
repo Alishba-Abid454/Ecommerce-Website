@@ -1,0 +1,112 @@
+﻿<style>
+    /* Navigation Bar Container - 1440px x 56px */
+    .nav-bar-row {
+        width: 1440px;
+        height: 56px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 50px;
+        background: white;
+        box-sizing: border-box;
+        border-bottom: 1px solid #E3E8EE;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    /* Grouping for Left Links */
+    .nav-links-group {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+    }
+
+    /* Individual Link Styling */
+    .nav-static-link {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        color: #1C1C1C;
+        font-size: 16px;
+        font-weight: 500;
+        white-space: nowrap;
+        transition: color 0.2s;
+    }
+
+        .nav-static-link:hover {
+            color: #0D6EFD;
+        }
+
+        /* Bold styling for "All category" */
+        .nav-static-link.bold {
+            font-weight: 600;
+        }
+
+    /* Utility Group (Right side) */
+    .nav-utility-group {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+    }
+
+    .nav-arrow-icon {
+        width: 12px;
+        height: 12px;
+        margin-left: 4px;
+    }
+
+    .flag-icon {
+        width: 20px;
+        height: 15px;
+        margin: 0 4px;
+        border-radius: 2px;
+        object-fit: cover;
+    }
+
+    /* Razor-Safe Responsive Media Query */
+    @@media (max-width: 1440px) {
+        .nav-bar-row {
+            width: 100%;
+            padding: 0 20px;
+        }
+    }
+</style>
+
+<nav class="nav-bar-row">
+    <div class="nav-links-group">
+        <a href="@Url.Action("Index", "Products")" class="nav-static-link bold">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+            All category
+        </a>
+        <a href="@Url.Action("HotOffers", "Navbar")" class="nav-static-link">Hot offers</a>
+        <a href="@Url.Action("GiftBoxes", "Navbar")" class="nav-static-link">Gift boxes</a>
+        <a href="@Url.Action("Projects", "Navbar")" class="nav-static-link">Projects</a>
+        <a href="@Url.Action("MenuItem", "Navbar")" class="nav-static-link">Menu item</a>
+        <a href="@Url.Action("Help", "Navbar")" class="nav-static-link">
+            Help
+            <svg class="nav-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="#8B96A5" stroke-width="2">
+                <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </a>
+    </div>
+
+    <div class="nav-utility-group">
+        <a href="#" class="nav-static-link">
+            English, USD
+            <svg class="nav-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="#8B96A5" stroke-width="2">
+                <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </a>
+        <a href="#" class="nav-static-link">
+            Ship to <img src="~/Image/flaginnavbar.png" alt="Flag" class="flag-icon">
+            <svg class="nav-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="#8B96A5" stroke-width="2">
+                <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </a>
+    </div>
+</nav>

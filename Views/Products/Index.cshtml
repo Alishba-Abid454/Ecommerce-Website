@@ -1,0 +1,672 @@
+﻿@{
+    ViewData["Title"] = ViewBag.CategoryName ?? "Products";
+    var categories = ViewBag.Categories as List<Category> ?? new List<Category>();
+    var brands = ViewBag.Brands as List<string> ?? new List<string>();
+    var features = ViewBag.Features as List<string> ?? new List<string>();
+    var minPrice = ViewBag.MinPrice ?? 0;
+    var maxPrice = ViewBag.MaxPrice ?? 1000;
+    var breadcrumb = ViewBag.Breadcrumb as List<BreadcrumbItem> ?? new List<BreadcrumbItem>();
+}
+
+<div class="container py-3">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb small text-muted">
+            @foreach (var item in breadcrumb)
+            {
+                if (item.IsActive)
+                {
+                    <li class="breadcrumb-item active" aria-current="page">@item.Title</li>
+                }
+                else
+                {
+                    <li class="breadcrumb-item">
+                        <a href="@item.Url" class="text-decoration-none text-muted">@item.Title</a>
+                    </li>
+                }
+            }
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Filters Sidebar -->
+        <aside class="col-lg-3 d-none d-lg-block">
+            <div class="accordion border-top" id="filterAccordion">
+                <!-- Category Filter -->
+                <div class="filter-group py-3 border-bottom">
+                    <h6 class="fw-bold mb-3">
+                        Category
+                        <i class="fa fa-chevron-up float-end small mt-1 text-muted toggle-icon" data-target="#categoryList"></i>
+                    </h6>
+                    <ul class="list-unstyled mb-0 text-muted small category-list" id="categoryList">
+                        @foreach (var category in categories.Take(8))
+                        {
+                            <li class="mb-2">
+                                <a href="@Url.Action("Index", new { categoryId = category.Id })"
+                                   class="text-decoration-none text-muted @(ViewBag.SelectedCategoryId == category.Id ? "fw-bold text-primary" : "")">
+                                    @category.Name
+                                </a>
+                            </li>
+                        }
+                        @if (categories.Count > 8)
+                        {
+                            <li class="text-primary cursor-pointer see-more-categories">See all</li>
+                        }
+                    </ul>
+                </div>
+
+                <!-- Brand Filter -->
+                <div class="filter-group py-3 border-bottom">
+                    <h6 class="fw-bold mb-3">
+                        Brands
+                        <i class="fa fa-chevron-up float-end small mt-1 text-muted toggle-icon" data-target="#brandList"></i>
+                    </h6>
+                    <div id="brandList">
+                        @foreach (var brand in brands.Take(5))
+                        {
+                            <div class="form-check mb-2 small text-muted">
+                                <input class="form-check-input brand-filter" type="checkbox" value="@brand" id="brand_@brand">
+                                <label class="form-check-label" for="brand_@brand">@brand</label>
+                            </div>
+                        }
+                        @if (brands.Count > 5)
+                        {
+                            <span class="text-primary small cursor-pointer see-more-brands">See all</span>
+                        }
+                    </div>
+                </div>
+
+                <!-- Features Filter -->
+                <div class="filter-group py-3 border-bottom">
+                    <h6 class="fw-bold mb-3">
+                        Features
+                        <i class="fa fa-chevron-up float-end small mt-1 text-muted toggle-icon" data-target="#featureList"></i>
+                    </h6>
+                    <div id="featureList">
+                        @foreach (var feature in features.Take(5))
+                        {
+                            <div class="form-check mb-2 small text-muted">
+                                <input class="form-check-input feature-filter" type="checkbox" value="@feature" id="feature_@feature">
+                                <label class="form-check-label" for="feature_@feature">@feature</label>
+                            </div>
+                        }
+                        @if (features.Count > 5)
+                        {
+                            <span class="text-primary small cursor-pointer see-more-features">See all</span>
+                        }
+                    </div>
+                </div>
+
+                <!-- Price Range Filter -->
+                <div class="filter-group py-3 border-bottom">
+                    <h6 class="fw-bold mb-3">
+                        Price range
+                        <i class="fa fa-chevron-up float-end small mt-1 text-muted toggle-icon" data-target="#priceRange"></i>
+                    </h6>
+                    <div id="priceRange">
+                        <div class="price-slider mb-3">
+                            <input type="range" class="form-range" id="minPriceRange" min="@minPrice" max="@maxPrice" value="@minPrice">
+                            <input type="range" class="form-range" id="maxPriceRange" min="@minPrice" max="@maxPrice" value="@maxPrice">
+                        </div>
+                        <div class="d-flex gap-2 mt-2">
+                            <div class="col-6">
+                                <label class="small text-muted">Min</label>
+                                <input type="number" class="form-control form-control-sm" id="minPrice" value="@minPrice" min="@minPrice" max="@maxPrice">
+                            </div>
+                            <div class="col-6">
+                                <label class="small text-muted">Max</label>
+                                <input type="number" class="form-control form-control-sm" id="maxPrice" value="@maxPrice" min="@minPrice" max="@maxPrice">
+                            </div>
+                        </div>
+                        <button class="btn btn-white border w-100 btn-sm mt-3 text-primary shadow-sm" id="applyPriceFilter">Apply</button>
+                    </div>
+                </div>
+
+                <!-- Condition Filter -->
+                <div class="filter-group py-3 border-bottom">
+                    <h6 class="fw-bold mb-3">
+                        Condition
+                        <i class="fa fa-chevron-up float-end small mt-1 text-muted toggle-icon" data-target="#conditionList"></i>
+                    </h6>
+                    <div id="conditionList">
+                        <div class="form-check mb-2 small text-muted">
+                            <input class="form-check-input condition-filter" type="radio" name="condition" value="" id="condAny" checked>
+                            <label class="form-check-label" for="condAny">Any</label>
+                        </div>
+                        <div class="form-check mb-2 small text-muted">
+                            <input class="form-check-input condition-filter" type="radio" name="condition" value="new" id="condNew">
+                            <label class="form-check-label" for="condNew">New</label>
+                        </div>
+                        <div class="form-check mb-2 small text-muted">
+                            <input class="form-check-input condition-filter" type="radio" name="condition" value="refurbished" id="condRefurbished">
+                            <label class="form-check-label" for="condRefurbished">Refurbished</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rating Filter -->
+                <div class="filter-group py-3 border-bottom">
+                    <h6 class="fw-bold mb-3">
+                        Ratings
+                        <i class="fa fa-chevron-up float-end small mt-1 text-muted toggle-icon" data-target="#ratingList"></i>
+                    </h6>
+                    <div id="ratingList">
+                        @for (int i = 5; i >= 4; i--)
+                        {
+                            <div class="form-check mb-2">
+                                <input class="form-check-input rating-filter" type="checkbox" value="@i" id="rating@i">
+                                <label class="form-check-label text-warning small" for="rating@i">
+                                    @for (int j = 0; j < 5; j++)
+                                    {
+                                        if (j < i)
+                                        {
+                                            <i class="fas fa-star"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="far fa-star text-muted"></i>
+                                        }
+                                    }
+                                    <span class="text-muted ms-1">& up</span>
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Products Main Content -->
+        <main class="col-lg-9">
+            <!-- Top Bar -->
+            <div class="card border border-light-subtle shadow-none rounded-3 p-3 mb-3">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <span class="small">
+                        <span id="totalItems">0</span> items in
+                        <strong class="fw-bold">@ViewBag.CategoryName</strong>
+                    </span>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="form-check mb-0 small">
+                            <input class="form-check-input" type="checkbox" id="verifiedOnly">
+                            <label class="form-check-label" for="verifiedOnly">Verified only</label>
+                        </div>
+                        <select class="form-select form-select-sm w-auto shadow-none" id="sortBy">
+                            <option value="featured">Featured</option>
+                            <option value="newest">Newest</option>
+                            <option value="price_low">Price: Low to High</option>
+                            <option value="price_high">Price: High to Low</option>
+                            <option value="rating">Top Rated</option>
+                            <option value="popular">Most Popular</option>
+                        </select>
+                        <div class="btn-group shadow-none border rounded overflow-hidden" id="viewToggle">
+                            <button class="btn btn-light border-0 view-btn active" data-view="grid">
+                                <i class="fa fa-th"></i>
+                            </button>
+                            <button class="btn btn-white border-0 view-btn" data-view="list">
+                                <i class="fa fa-bars text-dark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Container -->
+            <div id="productsContainer" class="row g-3">
+                <!-- Products will be loaded here via AJAX -->
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <nav class="d-flex justify-content-end mt-4" id="paginationContainer">
+                <!-- Pagination will be loaded here -->
+            </nav>
+        </main>
+    </div>
+</div>
+
+<!-- Quick View Modal -->
+<div class="modal fade" id="quickViewModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Quick View</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="quickViewContent">
+                <!-- Quick view content will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initial load
+            let currentFilter = {
+                categoryId: @(ViewBag.SelectedCategoryId ?? "null"),
+                page: 1,
+                pageSize: 10,
+                selectedBrands: [],
+                selectedFeatures: [],
+                minPrice: @minPrice,
+                maxPrice: @maxPrice,
+                condition: '',
+                rating: null,
+                sortBy: 'featured',
+                verifiedOnly: false
+            };
+
+            loadProducts();
+
+            // Filter change events
+            $('.brand-filter').change(function() {
+                updateBrandFilters();
+                currentFilter.page = 1;
+                loadProducts();
+            });
+
+            $('.feature-filter').change(function() {
+                updateFeatureFilters();
+                currentFilter.page = 1;
+                loadProducts();
+            });
+
+            $('.condition-filter').change(function() {
+                currentFilter.condition = $(this).val();
+                currentFilter.page = 1;
+                loadProducts();
+            });
+
+            $('.rating-filter').change(function() {
+                updateRatingFilters();
+                currentFilter.page = 1;
+                loadProducts();
+            });
+
+            $('#verifiedOnly').change(function() {
+                currentFilter.verifiedOnly = $(this).is(':checked');
+                currentFilter.page = 1;
+                loadProducts();
+            });
+
+            $('#sortBy').change(function() {
+                currentFilter.sortBy = $(this).val();
+                currentFilter.page = 1;
+                loadProducts();
+            });
+
+            $('#applyPriceFilter').click(function() {
+                currentFilter.minPrice = parseFloat($('#minPrice').val());
+                currentFilter.maxPrice = parseFloat($('#maxPrice').val());
+                currentFilter.page = 1;
+                loadProducts();
+            });
+
+            // Price range sync
+            $('#minPriceRange').on('input', function() {
+                $('#minPrice').val($(this).val());
+            });
+
+            $('#maxPriceRange').on('input', function() {
+                $('#maxPrice').val($(this).val());
+            });
+
+            $('#minPrice').on('input', function() {
+                $('#minPriceRange').val($(this).val());
+            });
+
+            $('#maxPrice').on('input', function() {
+                $('#maxPriceRange').val($(this).val());
+            });
+
+            // View toggle (grid/list)
+            $('.view-btn').click(function() {
+                $('.view-btn').removeClass('active');
+                $(this).addClass('active');
+                // You can implement list view here
+            });
+
+            // Toggle filters
+            $('.toggle-icon').click(function() {
+                const target = $(this).data('target');
+                $(target).slideToggle();
+                $(this).toggleClass('fa-chevron-up fa-chevron-down');
+            });
+
+            // Quick view
+            $(document).on('click', '.quick-view-btn', function() {
+                const productId = $(this).data('id');
+                $.get(`/Products/QuickView/${productId}`, function(data) {
+                    $('#quickViewContent').html(data);
+                    $('#quickViewModal').modal('show');
+                });
+            });
+
+            // Add to cart
+            $(document).on('click', '.add-to-cart-btn', function() {
+                const productId = $(this).data('id');
+                addToCart(productId, 1);
+            });
+
+            // Functions
+            function updateBrandFilters() {
+                currentFilter.selectedBrands = [];
+                $('.brand-filter:checked').each(function() {
+                    currentFilter.selectedBrands.push($(this).val());
+                });
+            }
+
+            function updateFeatureFilters() {
+                currentFilter.selectedFeatures = [];
+                $('.feature-filter:checked').each(function() {
+                    currentFilter.selectedFeatures.push($(this).val());
+                });
+            }
+
+            function updateRatingFilters() {
+                $('.rating-filter:checked').each(function() {
+                    currentFilter.rating = parseInt($(this).val());
+                });
+            }
+                    function addToCart(productId, quantity) {
+            $.ajax({
+                url: '/Home/AddToCart',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ productId: productId, quantity: quantity }),
+                success: function(response) {
+                    if (response.success) {
+                        $('#cartCount').text(`Cart: ${response.count} items`);
+                        showNotification('Product added to cart!', 'success');
+                    } else {
+                        showNotification(response.message || 'Error adding to cart', 'error');
+                    }
+                },
+                error: function() {
+                    showNotification('Error adding to cart', 'error');
+                }
+            });
+        }
+                    // Update the loadProducts function to set the total items correctly
+        function loadProducts() {
+            $('#productsContainer').html(`
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            `);
+
+            $.ajax({
+                url: '/Products/GetFilteredProducts',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(currentFilter),
+                success: function(response) {
+                    if (response.success) {
+                        renderProducts(response.data);
+                        renderPagination(response.data);
+                        $('#totalItems').text(response.data.totalCount); // This updates the item count
+
+                        // Also update the category name if needed
+                        if (response.data.totalCount === 0) {
+                            $('#totalItems').text('0');
+                        }
+                    } else {
+                        showNotification(response.message, 'error');
+                    }
+                },
+                error: function() {
+                    showNotification('Error loading products', 'error');
+                }
+            });
+        }
+            // function loadProducts() {
+            //     $('#productsContainer').html(`
+            //         <div class="text-center py-5">
+            //             <div class="spinner-border text-primary" role="status">
+            //                 <span class="visually-hidden">Loading...</span>
+            //             </div>
+            //         </div>
+            //     `);
+
+            //     $.ajax({
+            //         url: '/Products/GetFilteredProducts',
+            //         type: 'POST',
+            //         contentType: 'application/json',
+            //         data: JSON.stringify(currentFilter),
+            //         success: function(response) {
+            //             if (response.success) {
+            //                 renderProducts(response.data);
+            //                 renderPagination(response.data);
+            //                 $('#totalItems').text(response.data.totalCount);
+            //             } else {
+            //                 showNotification(response.message, 'error');
+            //             }
+            //         },
+            //         error: function() {
+            //             showNotification('Error loading products', 'error');
+            //         }
+            //     });
+            // }
+
+            function renderProducts(data) {
+                let html = '';
+
+                if (data.products.length === 0) {
+                    html = `
+                        <div class="col-12 text-center py-5">
+                            <h5>No products found</h5>
+                            <p class="text-muted">Try adjusting your filters</p>
+                        </div>
+                    `;
+                } else {
+                    data.products.forEach(product => {
+                        html += `
+                            <div class="col-lg-3 col-md-4 col-6">
+                                <div class="card h-100 border-0 shadow-sm product-card">
+                                    <div class="position-relative">
+                                        <a href="/Products/Details/${product.id}">
+                                            <img src="${product.imageUrl}" class="card-img-top p-3" alt="${product.name}" style="height: 200px; object-fit: contain;">
+                                        </a>
+                                        ${product.discountPercentage ?
+                                            `<span class="position-absolute top-0 start-0 badge bg-danger m-2">-${product.discountPercentage}%</span>` : ''}
+                                        <button class="btn btn-light position-absolute top-0 end-0 m-2 quick-view-btn" data-id="${product.id}">
+                                            <i class="fa-regular fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <a href="/Products/Details/${product.id}" class="text-decoration-none text-dark">
+                                            <h6 class="card-title small">${product.name}</h6>
+                                            <div class="d-flex align-items-center gap-2 mb-2">
+                                                <span class="fw-bold h5 mb-0">$${product.price.toFixed(2)}</span>
+                                                ${product.oldPrice ?
+                                                    `<del class="text-muted small">$${product.oldPrice.toFixed(2)}</del>` : ''}
+                                            </div>
+                                            <div class="d-flex align-items-center gap-2 small">
+                                                <div class="text-warning">
+                                                    ${renderStars(product.rating)}
+                                                </div>
+                                                <span class="text-muted">(${product.reviewCount})</span>
+                                            </div>
+                                            ${product.freeShipping ?
+                                                `<span class="badge bg-success mt-2">Free Shipping</span>` : ''}
+                                        </a>
+                                    </div>
+                                    <div class="card-footer bg-white border-0">
+                                        <button class="btn btn-sm btn-outline-primary w-100 add-to-cart-btn" data-id="${product.id}">
+                                            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                $('#productsContainer').html(html);
+            }
+
+            function renderStars(rating) {
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= Math.floor(rating)) {
+                        stars += '<i class="fas fa-star"></i>';
+                    } else if (i - 0.5 <= rating) {
+                        stars += '<i class="fas fa-star-half-alt"></i>';
+                    } else {
+                        stars += '<i class="far fa-star"></i>';
+                    }
+                }
+                return stars;
+            }
+
+            function renderPagination(data) {
+                let html = '<ul class="pagination pagination-sm">';
+
+                // Previous button
+                html += `<li class="page-item ${data.page === 1 ? 'disabled' : ''}">
+                    <a class="page-link text-dark" href="#" data-page="${data.page - 1}">
+                        <i class="fa fa-chevron-left"></i>
+                    </a>
+                </li>`;
+
+                // Page numbers
+                for (let i = 1; i <= data.totalPages; i++) {
+                    if (i === 1 || i === data.totalPages || (i >= data.page - 2 && i <= data.page + 2)) {
+                        html += `<li class="page-item ${i === data.page ? 'active' : ''}">
+                            <a class="page-link ${i === data.page ? '' : 'text-dark'}" href="#" data-page="${i}">${i}</a>
+                        </li>`;
+                    } else if (i === data.page - 3 || i === data.page + 3) {
+                        html += '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                    }
+                }
+
+                // Next button
+                html += `<li class="page-item ${data.page === data.totalPages ? 'disabled' : ''}">
+                    <a class="page-link text-dark" href="#" data-page="${data.page + 1}">
+                        <i class="fa fa-chevron-right"></i>
+                    </a>
+                </li>`;
+
+                html += '</ul>';
+                $('#paginationContainer').html(html);
+
+                // Pagination click handler
+                $('.page-link[data-page]').click(function(e) {
+                    e.preventDefault();
+                    const page = $(this).data('page');
+                    if (page && page !== currentFilter.page) {
+                        currentFilter.page = page;
+                        loadProducts();
+                    }
+                });
+            }
+                    // Products/Index.cshtml mein addToCart function update karo
+        function addToCart(productId, quantity) {
+            $.ajax({
+                url: '/Home/AddToCart',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ productId: productId, quantity: quantity }),
+                success: function(response) {
+                    if (response.success) {
+                        // Redirect to cart page
+                        window.location.href = '/Cart/Index';
+                    } else {
+                        alert(response.message || 'Error adding to cart');
+                    }
+                },
+                error: function() {
+                    alert('Error adding to cart');
+                }
+            });
+        }
+            @*function addToCart(productId, quantity) {
+                $.ajax({
+                    url: '/Home/AddToCart',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ productId: productId, quantity: quantity }),
+                    success: function(response) {
+                        if (response.success) {
+                            $('#cartCount').text(`Cart: ${response.count} items`);
+                            showNotification('Product added to cart!', 'success');
+                        } else {
+                            showNotification(response.message || 'Error adding to cart', 'error');
+                        }
+                    },
+                    error: function() {
+                        showNotification('Error adding to cart', 'error');
+                    }
+                });
+            }*@
+
+            function showNotification(message, type) {
+                const notification = $(`
+                    <div class="alert alert-${type === 'success' ? 'success' : 'danger'} notification-toast"
+                         style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 250px; animation: slideIn 0.3s;">
+                        ${message}
+                    </div>
+                `).appendTo('body');
+
+                setTimeout(() => {
+                    notification.fadeOut(300, function() { $(this).remove(); });
+                }, 3000);
+            }
+        });
+    </script>
+
+    <style>
+        .product-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+            .product-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+            }
+
+        .filter-group .cursor-pointer {
+            cursor: pointer;
+        }
+
+        .price-slider {
+            position: relative;
+            height: 40px;
+        }
+
+            .price-slider input[type=range] {
+                position: absolute;
+                width: 100%;
+                pointer-events: none;
+            }
+
+                .price-slider input[type=range]::-webkit-slider-thumb {
+                    pointer-events: auto;
+                }
+
+        .view-btn.active {
+            background-color: #e9ecef !important;
+        }
+
+        @@keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+}

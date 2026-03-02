@@ -1,0 +1,14 @@
+﻿@model EcommerceFullstackDesign.Models.Product
+
+<a asp-controller="Products"
+   asp-action="Details"
+   asp-route-id="@Model.Id"
+   class="product-card">
+
+    <div class="card">
+        <img src="@(Model.ImageUrl ?? "/Image/bottle.png")" />
+
+        <h5>@Model.Name</h5>
+        <p>$@Model.Price.ToString("0.00")</p>
+    </div>
+</a>

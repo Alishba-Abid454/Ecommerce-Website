@@ -1,0 +1,1056 @@
+﻿/* --- Variables --- */
+:root {
+    --primary-blue: #0D6EFD;
+    --light-blue: #E3F2FD;
+    --gray-bg: #F8F9FA;
+    --border-color: #DEE2E7;
+    --text-main: #1C1C1C;
+}
+
+body {
+    background-color: var(--gray-bg);
+    font-family: 'Inter', sans-serif;
+}
+
+/* --- Search Bar (Jo aapne pucha) --- */
+form.d-flex[role="search"] {
+    border: 2px solid var(--primary-blue);
+    border-radius: 8px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    height: 40px;
+    width: 50%;
+}
+
+.search-input {
+    border: none;
+    outline: none;
+    padding: 0 15px;
+    flex-grow: 1;
+    font-size: 15px;
+}
+
+.category-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 15px;
+    border-left: 1px solid var(--border-color);
+    cursor: pointer;
+    background: #fff;
+    height: 100%;
+    color: var(--text-main);
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.search-button {
+    background: var(--primary-blue);
+    color: #fff;
+    border: none;
+    padding: 0 20px;
+    height: 100%;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+    .search-button:hover {
+        background: #0052cc;
+    }
+
+.nav-link i.fa-bars {
+    font-size: 18px; /* Icon ka size */
+    color: #1C1C1C; /* Icon ka color */
+    vertical-align: middle;
+}
+
+.nav-link:hover {
+    color: var(--primary-blue) !important;
+}
+
+/* Navbar links styling */
+.nav-item .nav-link {
+    color: #1C1C1C !important; /* Pure black/dark grey color */
+    font-weight: 500; /* Medium bold (design ke mutabiq) */
+    font-size: 16px; /* Font size adjustment */
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+}
+
+    /* Hover effect taake user ko pata chale link pe hai */
+    .nav-item .nav-link:hover {
+        color: var(--primary-blue) !important;
+    }
+
+    /* Specifically bold karne ke liye agar zyada bold chahiye */
+    .nav-item .nav-link span,
+    .nav-item .nav-link {
+        font-weight: 600; /* Boldness level 600 */
+    }
+/* --- Deals Section --- */
+.countdown-box {
+    background: #606060;
+    color: #fff;
+    padding: 5px;
+    border-radius: 4px;
+    min-width: 45px;
+    text-align: center;
+    margin-right: 5px;
+}
+/* Container for Language and Ship-to */
+.d-flex.align-items-center {
+    font-size: 15px;
+    color: #1C1C1C !important; /* Pure black/dark grey color */
+    font-weight: bold; /* Medium bold (design ke mutabiq) */
+}
+
+/* English, USD text spacing */
+.me-3 {
+    margin-right: 20px !important;
+    cursor: pointer;
+}
+
+/* Flag Icon Styling */
+.flag-icon {
+    width: 22px; /* Design ke mutabiq standard size */
+    height: 15px; /* Rectangular flag shape */
+    object-fit: cover;
+    margin: 0 8px; /* "Ship to" aur "Arrow" ke beech gap */
+    border-radius: 2px; /* Slight rounded corners for professional look */
+    vertical-align: middle;
+}
+
+/* Dropdown Arrow Icon */
+.fa-chevron-down.small {
+    font-size: 10px;
+    color: #8B96A5; /* Muted grey color for arrow */
+    margin-left: 5px;
+}
+
+/* Hover effect */
+.d-flex.align-items-center span:hover {
+    color: var(--primary-blue);
+    cursor: pointer;
+}
+
+
+.main-footer {
+    background-color: #ffffff;
+    padding: 40px 0;
+}
+
+.footer-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Brand Column */
+.footer-col-brand {
+    flex: 0 0 25%;
+    max-width: 25%;
+}
+
+/* Middle Link Columns */
+.footer-col-links {
+    flex: 0 0 15%;
+    max-width: 15%;
+}
+
+/* App Button Column */
+.footer-col-apps {
+    flex: 0 0 18%;
+    max-width: 18%;
+}
+
+.footer-heading {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1C1C1C;
+    margin-bottom: 20px;
+}
+
+.footer-links-list li {
+    margin-bottom: 10px;
+}
+
+.footer-links-list a {
+    color: #8B96A5;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+    .footer-links-list a:hover {
+        color: #0D6EFD;
+    }
+
+/* Social Icons */
+.btn-social {
+    width: 32px;
+    height: 32px;
+    background-color: #BDC4CD;
+    color: white !important;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+    .btn-social:hover {
+        background-color: #0D6EFD;
+    }
+
+/* App Buttons Sleek */
+.app-btn-item {
+    background: #1C1C1C;
+    border-radius: 6px;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    width: 140px;
+    text-decoration: none !important;
+}
+
+.btn-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.btn-txt-box {
+    margin-left: 8px;
+    color: white;
+    line-height: 1.1;
+}
+
+.txt-top {
+    font-size: 8px;
+    display: block;
+}
+
+.txt-main {
+    font-size: 13px;
+    font-weight: 600;
+    display: block;
+}
+/* Saare links se underline khatam karne ke liye */
+a {
+    text-decoration: none !important;
+}
+
+    /* Agar aap chahte hain ke sirf hover (mouse le jaane) par underline dikhe ya bilkul na dikhe */
+    a:hover {
+        text-decoration: none !important;
+        /* color: #0D6EFD; Aap yahan hover color bhi de sakte hain */
+    }
+/* Responsive for Mobile */
+@media (max-width: 768px) {
+    .footer-col-brand, .footer-col-links, .footer-col-apps {
+        flex: 0 0 50%;
+        max-width: 50%;
+        margin-bottom: 30px;
+    }
+}
+
+/newsletter/
+/* Newsletter Section Main Styling */
+.newsletter-wrapper {
+    background-color: #EEEEEE !important; /* Exact Grey */
+    border-top: 1px solid #E3E8EE;
+    border-bottom: 1px solid #E3E8EE;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    margin-top: 40px;
+}
+
+/* Input elements styling */
+.newsletter-form .input-group-text {
+    border-color: #DEE2E6;
+}
+
+.newsletter-form .form-control {
+    border-color: #DEE2E6;
+}
+
+.newsletter-form .btn-primary {
+    background-color: #0D6EFD !important;
+    border: none;
+    border-radius: 6px !important;
+}
+
+/* Flag icon ko mazeed chota karne ke liye */
+.flag-icon-mini {
+    width: 18px !important; /* Pehle 22px tha, ab 18px kar diya */
+    height: 14px !important; /* Proportion ke hisaab se height bhi kam ki */
+    object-fit: cover;
+    border-radius: 1px; /* Chote size par radius bhi kam rakha hai */
+    margin-right: 6px; /* Text se fasla thoda kam kiya */
+    vertical-align: middle; /* Text ke bilkul center mein align karne ke liye */
+    display: inline-block;
+}
+/* Main Container Box */
+.main-hero-wrapper {
+    border: 1px solid #DEE2E7 !important;
+}
+
+/* Sidebar Styling */
+.category-nav .nav-link {
+    color: #505050;
+    padding: 10px 15px;
+    font-size: 15px;
+}
+
+    .category-nav .nav-link.active {
+        background-color: #E5F1FF; /* Light blue highlight */
+        color: #1C1C1C;
+        font-weight: 500;
+        border-radius: 6px;
+    }
+
+/* Banner Height Fix */
+/*.hero-banner {
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    object-fit:contain;
+
+}*/
+.hero-banner {
+    /* Image ko pura dikhane ke liye ye 3 properties zaroori hain */
+    background-image: url('/images/banner-items.jpg');
+    background-position: center; /* Image ka center hissa dikhayega */
+    background-repeat: no-repeat;
+    background-size: cover; /* Ye image ko area ke mutabiq fit karega */
+    /* Height ko design ke mutabiq set karein */
+    min-height: 380px;
+    width: 100%;
+    /* Content alignment */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 40px;
+    border-radius: 8px;
+}
+
+    .hero-banner .btn {
+        width: fit-content !important; /* Sirf text jitni jagah lega */
+        display: inline-block !important;
+        padding: 10px 25px !important; /* Andar ki space barabar rakhega */
+        margin-top: 20px;
+        border-radius: 6px;
+        font-weight: 500;
+    }
+/* Right Cards Text */
+.promo-card {
+    font-size: 15px;
+    flex-grow: 1; /* Cards ko barabar height dene ke liye */
+    display: flex;
+    align-items: center;
+    font-weight: 300;
+}
+
+.user-card span {
+    font-weight: 400 !important; /* Boldness hatane ke liye */
+    color: #1C1C1C;
+    display: inline-block;
+}
+
+/home and outdoor/
+/* Category Blocks Styling */
+.category-block {
+    min-height: 250px;
+}
+
+.item-box {
+    transition: background 0.3s;
+    height: 125px; /* Takreeban 2 rows banengi */
+}
+
+    .item-box:hover {
+        background-color: #f8f9fa;
+        cursor: pointer;
+    }
+
+    .item-box img {
+        max-height: 80px;
+        object-fit: contain;
+    }
+
+/* Inquiry Section Background */
+.inquiry-section {
+    min-height: 400px;
+}
+
+    .inquiry-section h2 {
+        font-size: 32px;
+    }
+
+/* Responsive Fix */
+@media (max-width: 992px) {
+    .category-block {
+        flex-direction: column;
+    }
+
+    .category-sidebar-banner {
+        width: 100% !important;
+        height: 150px;
+    }
+}
+
+/services and suppliers/
+/* Extra Services Cards */
+.service-card {
+    transition: transform 0.2s;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+}
+
+.service-img {
+    height: 120px;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.8);
+}
+
+.service-icon {
+    position: absolute;
+    top: 100px; /* Image ke bilkul niche edge par */
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background-color: #D1E7FF; /* Light blue */
+    border: 2px solid white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #1C1C1C;
+}
+
+/* Region Section */
+.leading-tight {
+    line-height: 1.1;
+}
+
+/custom css/
+/* Figma Fonts & Global Colors */
+:root {
+    --gray-600: #505050;
+    --gray-500: #8B96A5;
+    --blue-primary: #0D6EFD;
+}
+
+/* Sidebar Specifics */
+.filter-sidebar h6 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 15px;
+    padding-bottom: 5px;
+}
+
+/* Checkbox and labels figma style */
+.form-check-label {
+    color: #1C1C1C;
+    font-size: 15px;
+}
+
+/* Card Exact Match */
+.product-card {
+    border: 1px solid #E3E8EE !important;
+    background: #fff;
+    padding: 15px;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+    .product-card:hover {
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .product-card .price {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1C1C1C;
+        margin-bottom: 0;
+    }
+
+    .product-card .old-price {
+        font-size: 14px;
+        color: var(--gray-500);
+        text-decoration: line-through;
+        margin-left: 8px;
+    }
+
+/* Rating Stars Color */
+.text-warning {
+    color: #FF9017 !important; /* Figma exact orange-yellow */
+}
+
+/* Heart/Wishlist Button */
+.btn-wishlist {
+    border: 1px solid #E3E8EE;
+    color: var(--blue-primary);
+    background: white;
+    padding: 5px 10px;
+    border-radius: 6px;
+    box-shadow: 0px 1px 2px rgba(56, 56, 56, 0.08);
+}
+
+.filter-sidebar .filter-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1C1C1C;
+}
+
+.filter-sidebar .form-check-input {
+    border-radius: 4px; /* Figma style rounded checkboxes */
+    border: 2px solid #BDBDBD;
+    width: 20px;
+    height: 20px;
+}
+
+.filter-sidebar .form-check-label {
+    padding-left: 8px;
+    font-size: 15px;
+    color: #1C1C1C;
+}
+
+.filter-sidebar .filter-link {
+    font-size: 15px;
+    color: #505050;
+    padding: 4px 0;
+    display: block;
+    text-decoration: none;
+}
+/* Figma Checkbox Styling */
+.form-check-input:checked {
+    background-color: #0D6EFD;
+    border-color: #0D6EFD;
+}
+
+.form-check-input {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #BDBDBD;
+    cursor: pointer;
+}
+
+.form-check-label {
+    padding-left: 8px;
+    font-size: 15px;
+    color: #1C1C1C;
+    cursor: pointer;
+}
+
+/* Sidebar Headings */
+.filter-sidebar h6 {
+    font-size: 16px;
+    letter-spacing: -0.2px;
+}
+
+/* Toolbar Buttons */
+.btn-group .btn-light {
+    background-color: #eff2f4;
+}
+
+/* Heart Box Styling - Exact Figma Match */
+.btn-heart-box {
+    width: 40px;
+    height: 40px;
+    background: #FFFFFF;
+    border: 1px solid #DEE2E6; /* Light border jaisa image mein hai */
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0D6EFD; /* Blue heart color */
+    box-shadow: 0px 1px 2px rgba(56, 56, 56, 0.08);
+    cursor: pointer;
+    outline: none;
+}
+
+    .btn-heart-box:hover {
+        background-color: #f8f9fa;
+        border-color: #0D6EFD;
+        color: #0D6EFD;
+    }
+
+    .btn-heart-box i {
+        font-size: 18px;
+    }
+
+/* Overall Card Spacing */
+.product-card {
+    border: 1px solid #E3E8EE !important;
+}
+
+/detail page css/
+.main-img-container {
+    background-color: #fff;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.thumb-box {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: #fff;
+}
+
+    .thumb-box:hover {
+        border-color: #0D6EFD !important;
+    }
+
+.bg-info-subtle {
+    background-color: #E3F0FF !important;
+}
+
+.extra-small {
+    font-size: 13px !important;
+}
+
+/* Custom Thumbnails */
+.thumb-item {
+    cursor: pointer;
+    transition: 0.2s;
+    background: #fff;
+    min-width: 56px;
+}
+
+    .thumb-item:hover {
+        border-color: #0D6EFD !important;
+    }
+
+/* Product Tabs Adjustment */
+#productTab .nav-link {
+    font-size: 16px;
+    margin-bottom: -1px;
+}
+
+/* Backgrounds & Borders */
+.bg-danger-light {
+    background-color: #FFF0F0;
+}
+
+.btn-white {
+    background: #fff;
+    border: 1px solid #E3E8EE;
+}
+
+    .btn-white:hover {
+        background: #f8f9fa;
+    }
+
+/* Image Container */
+.main-detail-img {
+    background-color: #fff;
+    height: 380px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* Tab Styling matching PDF */
+#detailTabs .nav-link {
+    font-size: 15px;
+    background: transparent;
+    transition: 0.2s;
+}
+
+    #detailTabs .nav-link.active {
+        color: #0D6EFD !important;
+        border-bottom: 3px solid #0D6EFD !important;
+    }
+
+/* Table styling */
+.table-bordered td {
+    border-color: #E3E8EE !important;
+    padding-left: 15px !important;
+}
+
+/* Extra small text helper */
+.extra-small {
+    font-size: 12px;
+}
+
+.discount-banner {
+    background-color: #237CFF; /* Base blue color */
+    border-radius: 8px;
+    min-height: 100px;
+    border: none;
+}
+
+/* Right side slanted blue background */
+.banner-shape {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 40%;
+    background-color: #0067FF; /* Darker blue */
+    clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%); /* Isse slant banega */
+    z-index: 1;
+}
+
+/* Button color exact match */
+.btn-warning {
+    border-radius: 6px !important;
+    transition: 0.3s ease;
+}
+
+    .btn-warning:hover {
+        background-color: #e68215 !important;
+        transform: translateY(-1px);
+    }
+
+.discount-banner h4 {
+    font-size: 22px;
+    font-weight: 100;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .discount-banner {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .banner-shape {
+        display: none; /* Mobile par slant hatana behtar hai */
+    }
+}
+
+/cart page/
+/*.extra-small {
+    font-size: 12px;
+}*/
+/* Gray background for icons */
+/*.bg-light {
+    background-color: #E3E8EE !important;
+}*/
+/* Checkout Button color match */
+/*.btn-success {
+    font-size: 18px;
+    border-radius: 8px;
+}*/
+/* Image mix blend for clean product shots */
+/*.card img {
+    mix-blend-mode: multiply;
+}*/
+/* Background setup for the page */
+body {
+    background-color: #F8F9FA;
+}
+
+/* Extra small text helper */
+.extra-small {
+    font-size: 13px;
+}
+
+/* White button for Remove/Save */
+.btn-white {
+    background-color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+    .btn-white:hover {
+        background-color: #f8f9fa;
+    }
+
+/* Discount Banner Design */
+.discount-banner {
+    min-height: 110px;
+    border: none;
+}
+
+.banner-shape {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 35%;
+    background-color: #0067FF; /* Slanted Dark Blue */
+    clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
+    z-index: 1;
+}
+
+/* Card shadows for clean UI */
+.shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Image containment */
+.object-fit-contain {
+    object-fit: contain;
+}
+
+/product detail/
+/* Sidebar Group Icons Styling */
+.filter-group h6 {
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.filter-group ul li {
+    padding: 2px 0;
+    cursor: pointer;
+}
+
+/* Horizontal Card Image Box Fix */
+.card img {
+    mix-blend-mode: multiply;
+}
+
+/* Pagination Styling */
+.pagination .page-link {
+    border: 1px solid #E3E8EE;
+    margin: 0 2px;
+    border-radius: 4px;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #0D6EFD;
+    border-color: #0D6EFD;
+}
+
+/* Buttons and Shadows */
+.btn-white {
+    background-color: #ffffff;
+}
+
+.border-light-subtle {
+    border-color: #E3E8EE !important;
+}
+
+/checkout/
+/* Checkout Page Specific Styles */
+body {
+    background-color: #F7FAFC; /* Light Greyish background */
+    color: #1C1C1C;
+}
+
+/* Card Styling: Borderless with subtle shadow */
+.checkout-card {
+    background: #fff;
+    border: 1px solid #E3E8EE;
+    border-radius: 6px;
+    padding: 24px;
+}
+
+/* Form Labels & Inputs */
+.form-label {
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.form-control, .form-select {
+    border: 1px solid #DEE2E7;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 15px;
+}
+
+    .form-control:focus {
+        border-color: #0D6EFD;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+    }
+
+/* Payment Method Selection */
+.payment-box {
+    border: 1px solid #DEE2E7;
+    border-radius: 6px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+    .payment-box.active {
+        border-color: #0D6EFD;
+        background-color: #F1F7FF;
+    }
+
+    .payment-box i {
+        font-size: 24px;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+/* Summary Box */
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #505050;
+}
+
+.total-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1C1C1C;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #E3E8EE;
+}
+
+/* Button */
+.btn-continue {
+    background-color: #0D6EFD;
+    border: none;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 6px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+    .btn-continue:hover {
+        background-color: #0056b3;
+    }
+
+.input-group-text {
+    border-color: #DEE2E7;
+    color: #8B96A5;
+    font-size: 14px;
+}
+
+textarea.form-control {
+    resize: none; /* User resize na kar sakay design kharab hota hai */
+}
+/* Sticky Sidebar Fix */
+.sticky-top {
+    /* Header ki height ke mutabiq adjust karein */
+    top: 24px !important;
+}
+
+/* Extra small text for qty/notes */
+.extra-small {
+    font-size: 12px;
+}
+
+/* Summary item spacing */
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+/* Confirm Button Styling */
+.btn-continue {
+    background-color: #0D6EFD;
+    border: none;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: transform 0.1s;
+}
+
+    .btn-continue:active {
+        transform: scale(0.98);
+    }
+
+/* --- Global Responsive Fixes --- */
+
+@media (max-width: 992px) {
+    /* Search bar ko full width karna mobile/tablet par */
+    form.d-flex[role="search"] {
+        width: 100% !important;
+        margin: 15px 0;
+    }
+
+    /* Hero Banner text adjustment */
+    .hero-banner {
+        min-height: 250px;
+        padding-left: 20px;
+        background-position: left center;
+    }
+
+        .hero-banner h1 {
+            font-size: 24px;
+        }
+}
+
+@media (max-width: 768px) {
+    /* Navbar icons ko mobile par hide ya adjust karna */
+    .nav-item .nav-link {
+        font-size: 14px;
+        padding: 8px !important;
+    }
+
+    /* Product grid adjustments */
+    .product-card {
+        margin-bottom: 15px;
+    }
+
+    /* Checkout Sidebar: Sticky behavior khatam karna mobile par */
+    .sticky-top {
+        position: static !important;
+        margin-top: 20px;
+    }
+
+    /* Footer for very small screens */
+    .footer-col-brand, .footer-col-links, .footer-col-apps {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        text-align: center;
+    }
+
+    .footer-row {
+        justify-content: center;
+    }
+}
+
+/* --- Mobile Specific Fixes (Small Phones) --- */
+@media (max-width: 576px) {
+    .category-label {
+        display: none; /* Mobile par category dropdown hide karna search bar se */
+    }
+
+    .payment-box {
+        padding: 10px;
+        font-size: 12px;
+    }
+}
+/*.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    font-size: 12px;
+}
+
+.product-card {
+    border: 1px solid #eee !important;
+}
+
+    .product-card:hover {
+        border-color: #0d6efd !important;
+        cursor: pointer;
+    }
+
+.accordion-button:not(.collapsed) {
+    background-color: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+}
+
+.accordion-button:after {
+    background-size: 1rem;
+}
+*/

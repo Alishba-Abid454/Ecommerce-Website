@@ -1,0 +1,146 @@
+﻿@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<div class="container py-4">
+    <!-- Page Header -->
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold">Contact Us</h1>
+        <p class="text-muted">Get in touch with our team. We're here to help!</p>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fa-regular fa-circle-check me-2"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fa-regular fa-circle-exclamation me-2"></i> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row g-5">
+        <!-- Contact Form -->
+        <div class="col-md-7">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-4">Send us a message</h4>
+
+                    <form asp-action="SubmitContact" asp-controller="Navbar" method="post">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Your Name</label>
+                                <input type="text" class="form-control" name="name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Subject</label>
+                                <input type="text" class="form-control" name="subject" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Message</label>
+                                <textarea class="form-control" name="message" rows="5" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <i class="fa-regular fa-paper-plane me-2"></i>Send Message
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="col-md-5">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-4">Contact Information</h4>
+
+                    <div class="d-flex mb-4">
+                        <div class="me-3">
+                            <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
+                                <i class="fa-regular fa-location-dot text-primary fa-xl"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold">Address</h6>
+                            <p class="text-muted mb-0">123 Business Avenue<br>Tech Park, Silicon Valley<br>CA 94043, USA</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex mb-4">
+                        <div class="me-3">
+                            <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
+                                <i class="fa-regular fa-phone text-primary fa-xl"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold">Phone</h6>
+                            <p class="text-muted mb-0">+1 (800) 123-4567</p>
+                            <p class="text-muted">Mon-Fri, 9am-6pm PST</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex mb-4">
+                        <div class="me-3">
+                            <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
+                                <i class="fa-regular fa-envelope text-primary fa-xl"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold">Email</h6>
+                            <p class="text-muted mb-0">support@ecommerce.com</p>
+                            <p class="text-muted">sales@ecommerce.com</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
+                                <i class="fa-regular fa-clock text-primary fa-xl"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold">Business Hours</h6>
+                            <p class="text-muted mb-0">Monday - Friday: 9am - 6pm</p>
+                            <p class="text-muted">Saturday: 10am - 4pm</p>
+                            <p class="text-muted">Sunday: Closed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Media -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold mb-3">Follow Us</h6>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="btn btn-outline-primary rounded-circle p-3">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-primary rounded-circle p-3">
+                            <i class="fa-brands fa-twitter"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-primary rounded-circle p-3">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-primary rounded-circle p-3">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
