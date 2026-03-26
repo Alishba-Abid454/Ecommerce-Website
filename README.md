@@ -1,1 +1,2 @@
-# intern
+# Ecommerce website 
+This project is a modern eCommerce web application designed to provide users with a seamless online shopping experience. It features a clean and responsive interface where users can browse products across multiple categories, explore trending items, and interact with a user-friendly shopping system. It features search functionality, trending items, user authentication, and a responsive design for a seamless shopping experience. 
